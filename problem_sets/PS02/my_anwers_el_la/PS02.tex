@@ -1,0 +1,207 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{graphicx,textcomp}
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage[reqno]{amsmath}
+\usepackage{amsthm}
+\usepackage{fancyvrb}
+\usepackage{amssymb,enumerate}
+\usepackage[all]{xy}
+\usepackage{endnotes}
+\usepackage{lscape}
+\newtheorem{com}{Comment}
+\usepackage{float}
+\usepackage{hyperref}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+\usepackage[compact]{titlesec}
+\usepackage{dcolumn}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{multirow}
+\usepackage{xcolor}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+\definecolor{light-gray}{gray}{0.65}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
+\newcommand{\Sref}[1]{Section~\ref{#1}}
+\newtheorem{hyp}{Hypothesis}
+
+\title{Problem Set 2}
+\date{Ella Lang}
+\author{Applied Stats/Quant Methods 1}
+
+\begin{document}
+	\maketitle
+	\section*{Instructions}
+\begin{itemize}
+	\item Please show your work! You may lose points by simply writing in the answer. If the problem requires you to execute commands in \texttt{R}, please include the code you used to get your answers. Please also include the \texttt{.R} file that contains your code. If you are not sure if work needs to be shown for a particular problem, please ask.
+	\item Your homework should be submitted electronically on GitHub.
+	\item This problem set is due before 23:59 on Thursday October 22, 2026. No late assignments will be accepted.
+
+\end{itemize}
+
+	
+	\vspace{.5cm}
+	\section*{Question 1: Political Science}
+		\vspace{.25cm}
+	The following table was created using the data from a study run in a major Latin American city.\footnote{Fried, Lagunes, and Venkataramani (2010). ``Corruption and Inequality at the Crossroad: A Multimethod Study of Bribery and Discrimination in Latin America. \textit{Latin American Research Review}. 45 (1): 76-97.} As part of the experimental treatment in the study, one employee of the research team was chosen to make illegal left turns across traffic to draw the attention of the police officers on shift. Two employee drivers were upper class, two were lower class drivers, and the identity of the driver was randomly assigned per encounter. The researchers were interested in whether officers were more or less likely to solicit a bribe from drivers depending on their class (officers use phrases like, ``We can solve this the easy way'' to draw a bribe). The table below shows the resulting data.
+
+\newpage
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{l | c c c }
+		& Not Stopped & Bribe requested & Stopped/given warning \\
+		\\[-1.8ex] 
+		\hline \\[-1.8ex]
+		Upper class & 14 & 6 & 7 \\
+		Lower class & 7 & 7 & 1 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{enumerate}
+	
+	\item [(a)]
+	Calculate the $\chi^2$ test statistic by hand/manually (even better if you can do "by hand" in \texttt{R}).\\
+	
+	\noindent To calculate the X squared statistic I first recreated the table in R by creating a matrix, then added a total row and column using the rbind and cbind functions. To calculate the expected frequency for each cell I multiplied the row total by the column total, and divided this by the grand total. The expected frequency calculations were then inputted into a matrix. The X squared was then calculated with the following formula: $\chi^2 = \sum \frac{(O - E)^2}{E}$ \\
+	
+	\lstinputlisting[language=R, firstline=31, lastline=31]{PS02_myanswers_e_la.R}  
+	
+	\lstinputlisting[language=R, firstline=34, lastline=37]{PS02_myanswers_e_la.R}  
+	
+	\lstinputlisting[language=R, firstline=40, lastline=41]{PS02_myanswers_e_la.R}  
+	
+	\lstinputlisting[language=R, firstline=44, lastline=45]{PS02_myanswers_e_la.R}  
+	
+	\noindent The $X^2$ was 3.79\\
+	
+	\item [(b)]
+	Now calculate the p-value from the test statistic you just created (in \texttt{R}).\footnote{Remember frequency should be $>$ 5 for all cells, but let's calculate the p-value here anyway.}  What do you conclude if $\alpha = 0.1$?\\
+	
+	\noindent To calculate the p-value I first calculated the degrees of freedom using the formula: df = (rows - 1)(columns - 1). I then input the $X^2$ and degrees of freedom into the pchisq function to calculate the p-value. \\
+	
+	\lstinputlisting[language=R, firstline=48, lastline=48]{PS02_myanswers_e_la.R}  
+	
+	\lstinputlisting[language=R, firstline=52, lastline=52]{PS02_myanswers_e_la.R}  
+	
+	\noindent The p-value was 0.15, which is larger than the alpha of 0.1. We therefore fail to reject the null hypothesis that there is a relationship between officers soliciting bribes from drivers and the drivers class. \\
+	
+	\item [(c)] Calculate the standardized residuals for each cell and put them in the table below 
+	\vspace{1cm}
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{l | c c c }
+			& Not Stopped & Bribe requested & Stopped/given warning \\
+			\\[-1.8ex] 
+			\hline \\[-1.8ex]
+			Upper class & 0.1360828 & -0.8153742 & 0.818923 \\
+			\\
+			Lower class & -0.1825742 & 1.0939393 & -1.098701 \\
+			
+		\end{tabular}
+	\end{table}
+	
+	\noindent To calculate the standardized residuals I first converted the matrix of observations from the first question into a data frame. I then used the chisq.test function to calculate chi square, which I then used to calculate the residuals. \\
+	
+	\lstinputlisting[language=R, firstline=55, lastline=55]{PS02_myanswers_e_la.R}  
+	
+	\lstinputlisting[language=R, firstline=57, lastline=57]{PS02_myanswers_e_la.R}  
+	
+	\lstinputlisting[language=R, firstline=59, lastline=60]{PS02_myanswers_e_la.R}
+	
+	\lstinputlisting[language=R, firstline=62, lastline=62]{PS02_myanswers_e_la.R}  
+
+	\item [(d)] How might the standardized residuals help you interpret the results?  
+	
+	\noindent Standardized residuals help you interpret the results as they show which cells are driving the chi square result, as cells with larger deviations will contribute more to the  $X^2$ statistic. In the context of the above standardized residuals, there is not significant deviation from independence as all cells are -2$>$r$<$2. This is consistent with the failure to reject the null hypothesis, as the standardized residuals also indicate that there is no evidence of association between the variables. \\
+	
+\end{enumerate}
+
+\section*{Question 2: Economics}
+Chattopadhyay and Duflo were interested in whether women promote different policies than men.\footnote{Chattopadhyay and Duflo. (2004). ``Women as Policy Makers: Evidence from a Randomized Policy Experiment in India. \textit{Econometrica}. 72 (5), 1409-1443.} Answering this question with observational data is pretty difficult due to potential confounding problems (e.g. the districts that choose female politicians are likely to systematically differ in other aspects too). Hence, they exploit a randomized policy experiment in India, where since the mid-1990s, $\frac{1}{3}$ of village council heads have been randomly reserved for women. A subset of the data from West Bengal can be found at the following link: \url{https://raw.githubusercontent.com/kosukeimai/qss/master/PREDICTION/women.csv}\\
+
+\noindent Each observation in the data set represents a village and there are two villages associated with one GP (i.e. a level of government is called "GP"). Figure~\ref{fig:women_desc} below shows the names and descriptions of the variables in the dataset. The authors hypothesize that female politicians are more likely to support policies female voters want. Researchers found that more women complain about the quality of drinking water than men. You need to estimate the effect of the reservation policy on the number of new or repaired drinking water facilities in the villages.
+\vspace{.5cm}
+\begin{figure}[h!]
+	\caption{\footnotesize{Names and description of variables from Chattopadhyay and Duflo (2004).}}
+	\vspace{.5cm}
+	\centering
+	\label{fig:women_desc}
+	\includegraphics[width=1.1\textwidth]{"Screenshotps02.png"}
+\end{figure}		
+
+\begin{enumerate}
+	\item [(a)] State a null and alternative (two-tailed) hypothesis. 
+	
+\noindent Null hypothesis: Reserving a GP for a woman has no effect on the number of new or repaired drinking water facilities in the villages. \\
+
+\noindent Alternative Hypothesis: Reserving a GP for women has an effect on the number of new or repaired drinking water facilities in the villages. \\
+
+\noindent $H_0: \beta_1 = 0 $ \\
+
+\noindent $H_1: \beta_1 \neq 0 $ \\
+
+	\item [(b)] Run a bivariate regression to test this hypothesis in \texttt{R} (include your code!).
+	
+\noindent To run the bivariate regression I first investigated both of the relevant variables to confirm that reserved was a binary variable and water was a continuous variable. As the independent variable was binary, I factorized it using the tidyverse package so that the levels could be labeled for clarity. I then used the table and levels function to confirm that the factorization was successful, and that the labels were correctly assigned with roughly one third of villages having a GP reserved for women and two thirds not having a GP reserved for women. I then used the lm function to run the linear regression with reserved as the predictor variable and water as the outcome variable. \\
+	
+	\lstinputlisting[language=R, firstline=67, lastline=67]{PS02_myanswers_e_la.R} 
+	
+	\lstinputlisting[language=R, firstline=70, lastline=70]{PS02_myanswers_e_la.R} 
+	
+	\lstinputlisting[language=R, firstline=73, lastline=78]{PS02_myanswers_e_la.R}
+	
+	\lstinputlisting[language=R, firstline=81, lastline=82]{PS02_myanswers_e_la.R}
+	
+	\lstinputlisting[language=R, firstline=85, lastline=86]{PS02_myanswers_e_la.R}
+	
+	\item [(c)] Interpret the coefficient estimate for reservation policy.
+	
+	\lstinputlisting[language=R, firstline=88, lastline=95]{PS02_myanswers_e_la.R}
+	
+	\includegraphics[width=.5\textwidth]{"regressionoutput.png"} 
+	
+	\noindent The intercept is 14.7. This means that on average, villages without a GP reserved for women have 14.7 new or repaired drinking water facilities. The coefficient for villages which had a GP reserved for women had an average of 9.3 more new or repaired drinking water facilities than villages who did not have a GP reserved for women. This coefficient is significant at the 5 percent level. As the reservation policy was randomly assigned, this can be seen as evidence of a causal effect. \\
+	
+\noindent  \\
+\end{enumerate}
+
+
+%\end{enumerate}
+\end{document}
